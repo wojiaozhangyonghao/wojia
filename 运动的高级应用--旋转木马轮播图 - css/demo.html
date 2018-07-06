@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>旋转木马轮播图</title>
+    <link rel="stylesheet" href="css/css.css"/>
+</head>
+<body>
+<div class="wrap" id="wrap">
+   <div class="slide" id="slide">
+       <ul>
+           <li><a href="#"><img src="images/slidepic1.jpg" alt=""/></a></li>
+           <li><a href="#"><img src="images/slidepic2.jpg" alt=""/></a></li>
+           <li><a href="#"><img src="images/slidepic3.jpg" alt=""/></a></li>
+           <li><a href="#"><img src="images/slidepic4.jpg" alt=""/></a></li>
+           <li><a href="#"><img src="images/slidepic5.jpg" alt=""/></a></li>
+       </ul>
+       <div class="arrow" id="arrow">
+           <a href="javascript:;" class="prev" id="prev"></a>
+           <a href="javascript:void(0);" class="next" id="next"></a>
+       </div>
+   </div>
+</div>
+</body>
+</html>
+<script src="sport6.js"></script>
+<script>
+   var arr = [
+   		{   //1
+            "width":400,
+            "top":20,
+            "left":750,
+            "opacity":20,
+            "zIndex":2
+       },
+        {  // 2
+            "width":600,
+            "top":70,
+            "left":600,
+            "opacity":80,
+            "zIndex":3
+        },
+        {   // 3
+            "width":800,
+            "top":100,
+            "left":200,
+            "opacity":100,
+            "zIndex":4
+        },
+        {  // 4
+            "width":600,
+            "top":70,
+            "left":0,
+            "opacity":80,
+            "zIndex":3
+        },
+        {   // 5
+            "width":400,
+            "top":20,
+            "left":50,
+            "opacity":20,
+            "zIndex":2
+        }
+	];
+	var wrap = document.getElementById("wrap");
+	var list = document.getElementsByTagName("li");
+	var arrow = document.getElementById("arrow");
+	var prev = document.getElementById("prev");
+	var next = document.getElementById("next");
+	var f = true;//假设值为true时  可以操作按钮的点击
+	//页面打开后 将数组中每一个json数据分别作用在每一个li上
+	showData();
+	function showData(){
+		for( var i = 0 ; i < list.length ; i++ ){
+			startMove( list[i],arr[i] ,function(){
+				//上一个动作结束后 将开关变量的值变为 true  使按钮点击生效
+				f = true;
+			});
+		}
+	}
+	//鼠标移入移出大容器时  操作箭头的显示和隐藏（opacity）
+	wrap.onmouseover = function(){
+		startMove( arrow , {"opacity":100} )
+	}
+	wrap.onmouseout = function(){
+		startMove( arrow , {"opacity":0} )
+	}
+	//点击左侧按钮 
+	//删除数组中的第一个数据 并放到最后  改变数组数据位置
+	prev.onclick = function(){
+		if( f ){
+			arr.push( arr.shift() );
+			//改变数据的数据后  将这些数据重新设置到每一个li上
+			showData();
+			f = false;
+		}
+	}
+	//函数节流
+	//点击右侧按钮
+	//删除数组的最后一个数  并将这个数据放到数组的最前面
+	next.onclick = function(){
+		arr.unshift( arr.pop() );
+		//改变数据的数据后  将这些数据重新设置到每一个li上
+		showData();
+	}
+</script>
